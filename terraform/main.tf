@@ -94,10 +94,6 @@
 #     }
 # }
 
-provider "aws" {
-  region = var.region
-}
-
 # ------------------------------
 # IAM Role for EC2 to Access ECR
 # ------------------------------
