@@ -276,3 +276,15 @@ resource "aws_instance" "web" {
     Name = "CollegeWebsite-EC2"
   }
 }
+
+data "templatefile" "prometheus_config" {
+  template = "${path.module}/../prometheus/prometheus.yml.tmpl"
+  vars = {
+    web_public_ip = aws_instance.web_server.public_ip
+  }
+}
+
+resource "local_file" "prometheus_config" {
+  content  = data.templatefile.prometheus_config
+  filename = "${path.module}/../prometheus/prometheus.yml"
+}
