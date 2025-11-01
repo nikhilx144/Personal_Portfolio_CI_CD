@@ -1,99 +1,3 @@
-# resource "aws_security_group" "test-sg" {
-#     name = "test-sg"
-#     description = "Security Group for the EC2 Instance"
-
-#     ingress {
-#         from_port = 80
-#         to_port = 80
-#         protocol = "tcp"
-#         cidr_blocks = ["0.0.0.0/0"]
-#     }
-
-#     ingress {
-#         from_port = 22
-#         to_port = 22
-#         protocol = "tcp"
-#         cidr_blocks = ["0.0.0.0/0"]
-#     }
-
-#     egress {
-#         from_port = 0
-#         to_port = 0
-#         protocol = "-1"
-#         cidr_blocks = ["0.0.0.0/0"]
-#     }
-
-#     tags = {
-#         Name = "test-sg"
-#     }
-# }
-
-# resource "aws_iam_role" "ec2-ecr-access-role" {
-#     name = "ec2-ecr-access-role"
-#     assume_role_policy = jsonencode({
-#         Version = "2012-10-17"
-#         Statement = [{
-#             Action = "sts:AssumeRole"
-#             Effect = "Allow"
-#             Principal = {
-#                 Service = "ec2.amazonaws.com"
-#             }
-#         }]
-#     })
-# }
-
-# resource "aws_iam_role_policy_attachment" "ecr-read-policy" {
-#     role = aws_iam_role.ec2-ecr-access-role.name
-#     policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
-# }
-
-# resource "aws_iam_role_policy_attachment" "ssm-attach" {
-#     role = aws_iam_role.ec2-ecr-access-role.name
-#     policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-# }
-
-# resource "aws_iam_instance_profile" "ec2-profile" {
-#     name = "ec2-profile"
-#     role = aws_iam_role.ec2-ecr-access-role.name
-# }
-
-# resource "aws_instance" "test-ec2" {
-#     ami = var.ami_id
-#     instance_type = var.type
-#     vpc_security_group_ids = [ aws_security_group.test-sg.id ]
-#     key_name = var.key_name
-#     iam_instance_profile = aws_iam_instance_profile.ec2-profile.name
-
-#     user_data = base64encode(<<-EOF
-#         #!/bin/bash
-#         yum update -y
-#         yum install docker -y
-#         # amazon-linux-extras install docker -y (doesnt work for amazon linux 2023, only works for amazon linux 2)
-#         systemctl enable docker
-#         systemctl start docker
-#         usermod -a -G docker ec2-user
-#         sleep 10
-
-#         REGION=${var.region}
-#         ECR_REPO_URI=${var.ecr-repo-uri}
-
-#         aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_REPO_URI
-#         docker pull $ECR_REPO_URI:latest
-
-#         if [ $(docker ps -q -f name=sample-webpage-prac-image) ]; then
-#             docker stop sample-webpage-prac-image
-#             docker rm sample-webpage-prac-image
-#         fi
-
-#         docker run -d --name sample-webpage-prac-image -p 80:80 $ECR_REPO_URI:latest
-#     EOF
-#     )
-
-#     tags = {
-#         Name = "test-ec2"
-#     }
-# }
-
 # ------------------------------
 # IAM Role for EC2 to Access ECR
 # ------------------------------
@@ -280,7 +184,7 @@ resource "aws_instance" "web" {
 data "templatefile" "prometheus_config" {
   template = "${path.module}/../prometheus/prometheus.yml.tmpl"
   vars = {
-    web_public_ip = aws_instance.web_server.public_ip
+    web_public_ip = aws_instance.web.public_ip
   }
 }
 
