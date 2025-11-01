@@ -59,7 +59,8 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 echo '📦 Cloning repository... '
-                git branch: 'master', url: 'https://github.com/nikhilx144/Personal_Portfolio_CI_CD.git'
+                checkout scm
+                // git branch: 'master', url: 'https://github.com/nikhilx144/Personal_Portfolio_CI_CD.git'
             }
         }
 
