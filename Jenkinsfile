@@ -58,8 +58,6 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                echo '📦 Deleting previous workspace... '
-                deleteDir()
                 echo '📦 Cloning repository... '
                 git branch: 'master', url: 'https://github.com/nikhilx144/DevOps_Final_Test_Repo_6_Clean.git'
             }
