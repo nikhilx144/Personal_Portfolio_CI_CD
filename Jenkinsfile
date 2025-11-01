@@ -139,30 +139,42 @@ pipeline {
                             PROMETHEUS_IP=\$(terraform output -raw prometheus_public_ip)
                             echo "📂 Copying Prometheus configuration..."
 
-                            # Copy prometheus.yml to EC2 home directory
-                            scp -i \$KEY_FILE -o StrictHostKeyChecking=no prometheus/prometheus.yml ec2-user@\$PROMETHEUS_IP:/home/ec2-user/
+                            scp -i \$KEY_FILE -o StrictHostKeyChecking=no prometheus/prometheus.yml ec2-user@\${PROMETHEUS_IP}:/home/ec2-user/
 
-                            echo "🚀 Starting Prometheus container..."
+                            echo "🚀 Installing Docker & Starting Prometheus..."
 
-                            # Run all commands on EC2 in one SSH session
-                            ssh -i \$KEY_FILE -o StrictHostKeyChecking=no ec2-user@\$PROMETHEUS_IP '
+                            ssh -i \$KEY_FILE -o StrictHostKeyChecking=no ec2-user@\${PROMETHEUS_IP} '
+                                echo "🛠 Installing Docker ..."
+                                sudo yum update -y
+                                sudo amazon-linux-extras install docker -y || sudo yum install docker -y
+                                sudo systemctl start docker
+                                sudo systemctl enable docker
+                                sudo usermod -aG docker ec2-user
+
+                                echo "🐳 Docker installed. Setting up Prometheus..."
+
                                 sudo mkdir -p /etc/prometheus
                                 sudo rm -f /etc/prometheus/prometheus.yml
                                 sudo cp /home/ec2-user/prometheus.yml /etc/prometheus/prometheus.yml
                                 sudo chown -R root:root /etc/prometheus
                                 sudo chmod 644 /etc/prometheus/prometheus.yml
 
-                                # Remove any previous container
+                                echo "🔁 Removing old Prometheus container"
                                 sudo docker rm -f prometheus || true
 
-                                # Run Prometheus container
-                                sudo docker run -d --name prometheus -p 9090:9090 -v /etc/prometheus:/etc/prometheus prom/prometheus --config.file=/etc/prometheus/prometheus.yml
+                                echo "🚀 Running Prometheus"
+                                sudo docker run -d --name prometheus -p 9090:9090 \\
+                                    -v /etc/prometheus:/etc/prometheus prom/prometheus \\
+                                    --config.file=/etc/prometheus/prometheus.yml
+
+                                echo "✅ Prometheus is running!"
                             '
                         """
                     }
                 }
             }
         }
+
     }
 
     post {
