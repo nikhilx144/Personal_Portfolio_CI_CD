@@ -181,14 +181,14 @@ resource "aws_instance" "web" {
   }
 }
 
-data "templatefile" "prometheus_config" {
-  template = "${path.module}/../prometheus/prometheus.yml.tmpl"
-  vars = {
+locals {
+  prometheus_config = templatefile("${path.module}/../prometheus/prometheus.yml.tmpl", {
     web_public_ip = aws_instance.web.public_ip
-  }
+  })
 }
 
 resource "local_file" "prometheus_config" {
-  content  = data.templatefile.prometheus_config
+  content  = local.prometheus_config
   filename = "${path.module}/../prometheus/prometheus.yml"
 }
+
