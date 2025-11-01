@@ -59,7 +59,7 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 echo '📦 Cloning repository... '
-                git branch: 'master', url: 'https://github.com/nikhilx144/DevOps_Final_Test_Repo_6_Clean.git'
+                git branch: 'master', url: 'https://github.com/nikhilx144/Personal_Portfolio_CI_CD.git'
             }
         }
 
