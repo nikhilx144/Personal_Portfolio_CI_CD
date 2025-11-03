@@ -56,8 +56,3 @@ resource "aws_instance" "prometheus" {
     Name = "Prometheus-EC2"
   }
 }
-
-output "prometheus_public_ip" {
-  description = "Public IP of Prometheus server"
-  value       = aws_instance.prometheus.public_ip
-}
