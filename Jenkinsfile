@@ -127,12 +127,48 @@ pipeline {
             }
         }
 
+        stage('Deploy Grafana EC2') {
+            steps {
+                echo '📊 Deploying Grafana EC2...'
+                withCredentials([usernamePassword(credentialsId: 'aws-username-pass-access-key', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                    dir('terraform') {
+                        sh '''
+                            export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+                            export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+
+                            terraform init -reconfigure
+                            terraform apply -auto-approve -target=aws_instance.grafana
+                        '''
+                    }
+                }
+            }
+        }
+
+
     }
 
     post {
         success {
-            echo '✅ Docker image pushed, EC2 deployed, and website is running!'
-            echo '🎉 Open the site in your browser using the EC2 Public IP or DNS.'
+            echo '✅ Deployment Completed Successfully!'
+            dir('terraform') {
+                sh '''
+                    echo "🔎 Fetching Public IPs..."
+                    APP_IP=$(terraform output -raw ec2_public_ip)
+                    PROM_IP=$(terraform output -raw prometheus_public_ip)
+                    GRAFANA_IP=$(terraform output -raw grafana_public_ip)
+
+                    echo "--------------------------------------"
+                    echo "🌐 Personal Portfolio Public IP:  $APP_IP"
+                    echo "📊 Prometheus Public IP:         $PROM_IP:9090"
+                    echo "📈 Grafana Public IP:            $GRAFANA_IP:3000"
+                    echo "--------------------------------------"
+
+                    echo "🚀 Access URLs:"
+                    echo "Portfolio Website: http://$APP_IP"
+                    echo "Prometheus:        http://$PROM_IP:9090"
+                    echo "Grafana:           http://$GRAFANA_IP:3000"
+                '''
+            }
         }
         failure {
             echo '❌ Build or deployment failed!'
