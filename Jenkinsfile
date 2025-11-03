@@ -149,25 +149,30 @@ pipeline {
 
     post {
         success {
-            echo '✅ Deployment Completed Successfully!'
+            echo "✅ Deployment Completed Successfully!"
+
+            withCredentials([
+            usernamePassword(
+                credentialsId: 'aws-creds',
+                usernameVariable: 'AWS_ACCESS_KEY_ID',
+                passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+            )
+            ]) {
             dir('terraform') {
                 sh '''
-                    echo "🔎 Fetching Public IPs..."
-                    APP_IP=$(terraform output -raw ec2_public_ip)
-                    PROM_IP=$(terraform output -raw prometheus_public_ip)
-                    GRAFANA_IP=$(terraform output -raw grafana_public_ip)
+                echo "🔎 Fetching Public IPs..."
 
-                    echo "--------------------------------------"
-                    echo "🌐 Personal Portfolio Public IP:  $APP_IP"
-                    echo "📊 Prometheus Public IP:         $PROM_IP:9090"
-                    echo "📈 Grafana Public IP:            $GRAFANA_IP:3000"
-                    echo "--------------------------------------"
+                APP_IP=$(terraform output -raw ec2_public_ip)
+                PROM_IP=$(terraform output -raw prometheus_public_ip)
+                GRAF_IP=$(terraform output -raw grafana_public_ip)
 
-                    echo "🚀 Access URLs:"
-                    echo "Portfolio Website: http://$APP_IP"
-                    echo "Prometheus:        http://$PROM_IP:9090"
-                    echo "Grafana:           http://$GRAFANA_IP:3000"
+                echo "=========================="
+                echo "📌 Application Public IP:   $APP_IP"
+                echo "📊 Prometheus Public IP:    $PROM_IP:9090"
+                echo "📈 Grafana Public IP:       http://$GRAF_IP:3000"
+                echo "=========================="
                 '''
+            }
             }
         }
         failure {
