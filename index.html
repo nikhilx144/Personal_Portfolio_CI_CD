@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nikhil Gelli - Personal Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        header .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        header h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            font-weight: 700;
+            animation: fadeInDown 1s ease;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.5em;
+            margin-bottom: 30px;
+            opacity: 0.95;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .contact-links a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 28px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 0.95em;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .contact-links a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            padding: 18px 0;
+            flex-wrap: wrap;
+        }
+
+        nav ul li {
+            margin: 0 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        nav ul li a:hover {
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        section {
+            background: white;
+            margin: 50px auto;
+            padding: 70px 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        section:hover {
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
+        }
+
+        section h2 {
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            color: #667eea;
+            text-align: center;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 5px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 3px;
+        }
+
+        .objective {
+            text-align: center;
+            font-size: 1.2em;
+            line-height: 2;
+            color: #555;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            border-left: 5px solid #667eea;
+        }
+
+        .objective:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+            border-left-width: 8px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .skill-category {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .skill-category:hover::before {
+            left: 100%;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.2);
+            border-left-width: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .skill-category h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            transition: color 0.3s ease;
+        }
+
+        .skill-category:hover h3 {
+            color: white;
+        }
+
+        .skill-category p {
+            color: #666;
+            line-height: 1.8;
+            font-size: 1.05em;
+            transition: color 0.3s ease;
+        }
+
+        .skill-category:hover p {
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .projects-grid {
+            display: grid;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .project-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+            padding: 35px;
+            border-radius: 15px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-top: 4px solid #667eea;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+            background-size: 200% 100%;
+            transition: all 0.5s ease;
+        }
+
+        .project-card:hover::before {
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.25);
+            background: white;
+        }
+
+        .project-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .project-card h3 {
+            color: #333;
+            font-size: 1.5em;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .project-card:hover h3 {
+            color: #667eea;
+        }
+
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: #333;
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            flex-shrink: 0;
+        }
+
+        .github-link:hover {
+            background: #667eea;
+            transform: scale(1.15) rotate(360deg);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .github-link svg {
+            width: 18px;
+            height: 18px;
+            fill: white;
+        }
+
+
+        .project-date {
+            color: #999;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .project-card:hover .project-date {
+            color: #764ba2;
+        }
+
+        .project-card ul {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+
+        .project-card li {
+            margin: 10px 0;
+            color: #555;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .project-card:hover li {
+            color: #333;
+            transform: translateX(5px);
+        }
+
+        .tech-tags {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .tech-tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: default;
+        }
+
+        .tech-tag:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .education-timeline {
+            margin-top: 30px;
+        }
+
+        .education-item {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+            padding: 30px;
+            margin-bottom: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #764ba2;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .education-item::after {
+            content: '🎓';
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 3em;
+            opacity: 0.1;
+            transition: all 0.3s ease;
+        }
+
+        .education-item:hover::after {
+            opacity: 0.3;
+            transform: translateY(-50%) rotate(15deg) scale(1.2);
+        }
+
+        .education-item:hover {
+            transform: translateX(10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(118, 75, 162, 0.2);
+            border-left-width: 8px;
+            background: white;
+        }
+
+        .education-item h3 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 1.4em;
+            transition: all 0.3s ease;
+        }
+
+        .education-item:hover h3 {
+            color: #764ba2;
+        }
+
+        .education-item .institution {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .education-item:hover .institution {
+            transform: translateX(5px);
+        }
+
+        .education-item .date {
+            color: #999;
+            font-size: 0.95em;
+            margin-bottom: 12px;
+            transition: color 0.3s ease;
+        }
+
+        .education-item:hover .date {
+            color: #764ba2;
+        }
+
+        .education-item .score {
+            color: #555;
+            font-weight: 600;
+            font-size: 1.05em;
+            transition: all 0.3s ease;
+        }
+
+        .education-item:hover .score {
+            color: #667eea;
+            transform: scale(1.05);
+            display: inline-block;
+        }
+
+        .cert-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+            padding: 35px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border-left: 5px solid #667eea;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cert-card::after {
+            content: '🏆';
+            position: absolute;
+            right: 30px;
+            top: 30px;
+            font-size: 3em;
+            opacity: 0.1;
+            transition: all 0.3s ease;
+        }
+
+        .cert-card:hover::after {
+            opacity: 0.3;
+            transform: rotate(15deg) scale(1.2);
+        }
+
+        .cert-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+            border-left-width: 8px;
+            background: white;
+        }
+
+        .cert-card h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            transition: all 0.3s ease;
+        }
+
+        .cert-card h3 a {
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .cert-card:hover h3 {
+            color: #667eea;
+        }
+
+        .cert-card:hover h3 a {
+            color: #667eea;
+        }
+
+        .cert-card ul {
+            margin-left: 20px;
+        }
+
+        .cert-card li {
+            margin: 12px 0;
+            color: #555;
+            line-height: 1.8;
+            transition: all 0.3s ease;
+        }
+
+        .cert-card:hover li {
+            color: #333;
+            transform: translateX(5px);
+        }
+
+        footer {
+            background: linear-gradient(135deg, #333 0%, #1a1a1a 100%);
+            color: white;
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 60px;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+        }
+
+        footer p {
+            margin: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.2em;
+            }
+
+            header p {
+                font-size: 1.2em;
+            }
+
+            section {
+                padding: 50px 25px;
+            }
+
+            section h2 {
+                font-size: 2em;
+            }
+
+            nav ul li {
+                margin: 5px 10px;
+            }
+
+            .contact-links {
+                gap: 15px;
+            }
+
+            .contact-links a {
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Nikhil Gelli</h1>
+            <p>Aspiring DevOps Engineer</p>
+            <div class="contact-links">
+                <a href="tel:+917680062796">📞 +91 7680062796</a>
+                <a href="mailto:nikhil.gelli@outlook.com">✉️ nikhil.gelli@outlook.com</a>
+                <a href="https://github.com/nikhilx144" target="_blank">💻 GitHub</a>
+                <a href="https://www.linkedin.com/in/nikhil-gelli-145725222/" target="_blank">🔗 LinkedIn</a>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#certifications">Certifications</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section id="about">
+            <h2>About Me</h2>
+            <p class="objective">
+                Aspiring DevOps Engineer skilled in AWS, Docker, Kubernetes, Jenkins, Git, and Terraform. 
+                Looking to apply automation, CI/CD, and cloud deployment expertise to improve delivery speed, 
+                reliability, and scalability in a DevOps-driven environment.
+            </p>
+        </section>
+
+        <section id="skills">
+            <h2>Technical Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>Programming Languages</h3>
+                    <p>Java, Python, C, SQL</p>
+                </div>
+                <div class="skill-category">
+                    <h3>Web Technologies</h3>
+                    <p>HTML, CSS, JavaScript, ReactJS</p>
+                </div>
+                <div class="skill-category">
+                    <h3>DevOps Tools</h3>
+                    <p>AWS, Jenkins, Docker, Terraform, Git, Kubernetes, Prometheus</p>
+                </div>
+                <div class="skill-category">
+                    <h3>Operating Systems</h3>
+                    <p>Linux, Windows</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2>Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>CI/CD Pipeline Implementation for Personal Portfolio Web Application</h3>
+                        <a href="https://github.com/nikhilx144" target="_blank" class="github-link" aria-label="View on GitHub">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <p class="project-date">Sept. 2025 - Present</p>
+                    <ul>
+                        <li>Built an automated CI/CD pipeline with Jenkins triggered via GitHub webhooks to build, test, and containerize my personal portfolio web application</li>
+                        <li>Pushed Docker images to AWS ECR and provisioned infrastructure using Terraform including EC2, Security groups, and IAM roles</li>
+                        <li>Deployed containerized application on EC2 instances with automated pull from ECR, achieving repeatable and version-controlled deployments</li>
+                    </ul>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Git & GitHub</span>
+                        <span class="tech-tag">Jenkins</span>
+                        <span class="tech-tag">Docker</span>
+                        <span class="tech-tag">Terraform</span>
+                        <span class="tech-tag">AWS</span>
+                        <span class="tech-tag">Prometheus</span>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>Multimodal Document Summarizer using Colpali</h3>
+                        <a href="https://github.com/nikhilx144/Multimodal-Document-Summarizer-Using-Colpali" target="_blank" class="github-link" aria-label="View on GitHub">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <p class="project-date">Jan. 2025 - May 2025</p>
+                    <ul>
+                        <li>Used GPT-4o model for final response generation along with Colpali as an embedding model</li>
+                        <li>Added multilingual support and voice-based responses using Google Translate API and gTTS</li>
+                        <li>Objective of the project was to build a multimodal document summarizer and chatbot for complex documents</li>
+                    </ul>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Colpali</span>
+                        <span class="tech-tag">Streamlit</span>
+                        <span class="tech-tag">OpenAI</span>
+                        <span class="tech-tag">byaldi</span>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>Face Attendance using FaceNet</h3>
+                        <a href="https://github.com/nikhilx144/Face-attendance-using-FaceNet" target="_blank" class="github-link" aria-label="View on GitHub">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <p class="project-date">Jan. 2024 - Apr. 2024</p>
+                    <ul>
+                        <li>Designed workflow to capture faces, generate embeddings, and track attendance in Excel</li>
+                        <li>Used Haar Cascade classifiers for detection, keras for model training and pillow for image processing</li>
+                        <li>Objective of the project was to build an automated face attendance system for colleges and offices</li>
+                    </ul>
+                    <div class="tech-tags">
+                        <span class="tech-tag">OpenCV</span>
+                        <span class="tech-tag">FaceNet</span>
+                        <span class="tech-tag">Keras</span>
+                        <span class="tech-tag">Pillow</span>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>Multi-document Text Summarization using LlaMa 2</h3>
+                        <a href="https://github.com/nikhilx144/LlaMa_2_PDF_Summarizer_and_ChatBot" target="_blank" class="github-link" aria-label="View on GitHub">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <p class="project-date">Oct. 2023 - Jan. 2024</p>
+                    <ul>
+                        <li>Implemented diverse summarization modes like Detailed, Simple, Formal, and Creative to cater to different user requirements</li>
+                        <li>Integrated a RAG chatbot which answers questions asked about the document(s)</li>
+                        <li>Objective of the project was to build a multi-document PDF summarizer app using LlaMa 2</li>
+                    </ul>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Streamlit</span>
+                        <span class="tech-tag">LlamaCpp</span>
+                        <span class="tech-tag">Langchain</span>
+                        <span class="tech-tag">PyPDF2</span>
+                        <span class="tech-tag">pytesseract</span>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>E-Pashudhan: A Portal for Dairy Farmers</h3>
+                        <a href="https://github.com/nikhilx144/e-Pashudhan" target="_blank" class="github-link" aria-label="View on GitHub">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <p class="project-date">Nov. 2022 - Feb. 2023</p>
+                    <ul>
+                        <li>Designed and styled responsive web pages using HTML and CSS to ensure a great user experience</li>
+                        <li>Implemented client-side routing using React Router DOM for seamless navigation across web pages</li>
+                        <li>Objective of the project was to build a web portal for dairy farmers</li>
+                    </ul>
+                    <div class="tech-tags">
+                        <span class="tech-tag">MERN Stack</span>
+                        <span class="tech-tag">React Native</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="education">
+            <h2>Education</h2>
+            <div class="education-timeline">
+                <div class="education-item">
+                    <h3>B.E. in Computer Science (AI & ML)</h3>
+                    <p class="institution">Neil Gogte Institute of Technology, Hyderabad, India</p>
+                    <p class="date">2021 - 2025</p>
+                    <p class="score">CGPA: 7.92</p>
+                </div>
+
+                <div class="education-item">
+                    <h3>12th Standard (CBSE)</h3>
+                    <p class="institution">The Hyderabad Public School, Hyderabad, India</p>
+                    <p class="date">2019 - 2021</p>
+                    <p class="score">Cumulative: 92.20%</p>
+                </div>
+
+                <div class="education-item">
+                    <h3>10th Standard (CBSE)</h3>
+                    <p class="institution">The Hyderabad Public School, Hyderabad, India</p>
+                    <p class="date">2010 - 2019</p>
+                    <p class="score">Cumulative: 90.00%</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="certifications">
+            <h2>Certifications</h2>
+            <div class="cert-card">
+                <h3><a href="https://drive.google.com/file/d/1Dpa5fZsMsnE_dZqFV5QllgyNwOYVW9Gs/view?usp=sharing" target="_blank">AWS Cloud Practitioner Essentials</a></h3>
+                <ul>
+                    <li>Gained comprehensive knowledge of various AWS services along with cloud computing concepts in general</li>
+                    <li>Applied AWS services in projects to implement CI/CD pipelines for automated deployment and integration</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Nikhil Gelli. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
