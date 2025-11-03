@@ -48,7 +48,3 @@ resource "aws_instance" "grafana" {
     Name = "Grafana-EC2"
   }
 }
-
-output "grafana_public_ip" {
-  value = aws_instance.grafana.public_ip
-}
