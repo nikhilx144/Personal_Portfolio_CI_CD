@@ -306,42 +306,34 @@ resource "aws_instance" "web" {
 
   user_data = <<-EOF
     #!/bin/bash
-
     yum update -y
     amazon-linux-extras install docker -y
-
     systemctl enable docker
     systemctl start docker
-    usermod -aG docker ec2-user
+    usermod -a -G docker ec2-user
     sleep 10
 
-    # ------------------------------
-    # ✅ Run Application Container
-    # ------------------------------
     REGION=${var.region}
     REPO=${var.ecr_repo_url}
 
     # Login to ECR
-    aws ecr get-login-password --region \${REGION} | docker login --username AWS --password-stdin \${REPO}
+    aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $REPO
 
-    # Pull latest version
-    docker pull \${REPO}:latest
+    # Pull latest image
+    docker pull $REPO:latest
 
-    # Stop existing container
+    # Stop old container
     docker stop college-website || true
     docker rm college-website || true
 
-    # Run latest container
-    docker run -d --name college-website -p 80:80 \${REPO}:latest
+    # Run new container
+    docker run -d --name college-website -p 80:80 $REPO:latest
 
-    # ------------------------------
     # Node Exporter
-    # ------------------------------
     cd /opt
     wget https://github.com/prometheus/node_exporter/releases/download/v1.8.2/node_exporter-1.8.2.linux-amd64.tar.gz
     tar xvf node_exporter-1.8.2.linux-amd64.tar.gz
     cd node_exporter-1.8.2.linux-amd64
-
     nohup ./node_exporter > /var/log/node_exporter.log 2>&1 &
 
     cat <<EOT > /etc/systemd/system/node_exporter.service
@@ -361,6 +353,7 @@ resource "aws_instance" "web" {
     systemctl enable node_exporter
     systemctl start node_exporter
   EOF
+
 
   tags = {
     Name = "Personal-Portfolio-EC2"
