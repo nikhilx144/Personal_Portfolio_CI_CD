@@ -322,17 +322,17 @@ resource "aws_instance" "web" {
     REPO=${var.ecr_repo_url}
 
     # Login to ECR
-    aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $REPO
+    aws ecr get-login-password --region \${REGION} | docker login --username AWS --password-stdin \${REPO}
 
-    # Pull latest version (very important)
-    docker pull ${REPO}:latest
+    # Pull latest version
+    docker pull \${REPO}:latest
 
     # Stop existing container
     docker stop college-website || true
     docker rm college-website || true
 
     # Run latest container
-    docker run -d --name college-website -p 80:80 ${REPO}:latest
+    docker run -d --name college-website -p 80:80 \${REPO}:latest
 
     # ------------------------------
     # Node Exporter
