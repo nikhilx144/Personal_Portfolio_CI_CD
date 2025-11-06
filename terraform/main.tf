@@ -125,23 +125,23 @@ resource "aws_instance" "web" {
     # Wait for Docker to start
     sleep 10
 
-    # ------------------------------
-    # 2. ECR Login and Run App Container
-    # ------------------------------
-    REGION=${var.region}
-    REPO=${var.ecr_repo_url}
+    # # ------------------------------
+    # # 2. ECR Login and Run App Container
+    # # ------------------------------
+    # REGION=${var.region}
+    # REPO=${var.ecr_repo_url}
 
-    aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $REPO
-    docker pull $REPO
+    # aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $REPO
+    # docker pull $REPO
 
-    # Stop existing container if running
-    if [ $(docker ps -q -f name=college-website) ]; then
-      docker stop college-website
-      docker rm college-website
-    fi
+    # # Stop existing container if running
+    # if [ $(docker ps -q -f name=college-website) ]; then
+    #   docker stop college-website
+    #   docker rm college-website
+    # fi
 
-    # Run container on port 80
-    docker run -d --name college-website -p 80:80 $REPO
+    # # Run container on port 80
+    # docker run -d --name college-website -p 80:80 $REPO
 
     # ------------------------------
     # 3. Install Prometheus Node Exporter

@@ -59,6 +59,48 @@ pipeline {
             }
         }
 
+        stage('Update App on EC2') {
+            steps {
+                echo '♻️ Updating application container on EC2...'
+
+                withCredentials([
+                    usernamePassword(credentialsId: 'aws-username-pass-access-key',
+                        usernameVariable: 'AWS_ACCESS_KEY_ID',
+                        passwordVariable: 'AWS_SECRET_ACCESS_KEY'),
+                    sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'KEY_FILE')
+                ]) {
+
+                    script {
+                        def EC2_IP = sh(
+                            script: "cd terraform && terraform output -raw ec2_public_ip",
+                            returnStdout: true
+                        ).trim()
+
+                        sh """
+                            ssh -i $KEY_FILE -o StrictHostKeyChecking=no ec2-user@${EC2_IP} '
+                                echo "🛠 Logging into ECR..."
+                                aws ecr get-login-password --region ${REGION} | \
+                                    sudo docker login --username AWS --password-stdin ${ECR_REPO}
+
+                                echo "🛑 Stopping old container..."
+                                sudo docker stop college-website || true
+                                sudo docker rm college-website || true
+
+                                echo "🐳 Pulling latest image..."
+                                sudo docker pull ${ECR_REPO}:latest
+
+                                echo "🚀 Running updated container..."
+                                sudo docker run -d --name college-website -p 80:80 ${ECR_REPO}:latest
+
+                                echo "✅ App updated successfully!"
+                            '
+                        """
+                    }
+                }
+            }
+        }
+
+
         stage('Deploy Prometheus EC2') {
             steps {
                 echo '📊 Deploying Prometheus EC2 instance...'
